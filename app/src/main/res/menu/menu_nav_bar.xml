@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_parties"
+        android:enabled="true"
+        android:title="@string/menu_parties"
+        android:icon="@drawable/ic_people_black_24dp" />
+    <item
+        android:id="@+id/menu_transactions"
+        android:enabled="true"
+        android:title="@string/menu_transactions"
+        android:icon="@drawable/ic_compare_arrows_black_24dp" />
+
+    <item
+        android:id="@+id/menu_reports"
+        android:enabled="true"
+        android:title="@string/menu_reports"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp" />
+</menu>

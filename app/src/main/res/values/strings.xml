@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Logbook</string>
+    <string name="label_user_id">User Id</string>
+    <string name="label_password">Password</string>
+    <string name="label_login_button">Login</string>
+    <string name="const_hint_user_name">username</string>
+    <string name="const_hint_password">password</string>
+    <string name="welcome_message">Welcome to LogBook!</string>
+    <string name="no_party_message">No parties defined as yet</string>
+    <string name="indian_rupee">INR</string>
+    <string name="us_dollar">USD</string>
+    <string name="uae_dhiram">AED</string>
+
+    <string name="menu_parties">Parties</string>
+    <string name="party_screen_title">Party Maintenance</string>
+    <string name="add_party">Add Party</string>
+    <string name="party_name">Party Name</string>
+    <string name="save_party">Save Party</string>
+    <string name="save_party_title">New Party</string>
+    <string name="enter_party_name">Enter party name to save</string>
+    <string name="party_saved">Party successfully saved!</string>
+    <string name="party_not_saved">Unable to save the party!</string>
+    <!--ERROR MESSAGES-->
+    <string name="unable_to_process_data">Unable to process data</string>
+    <string name="unable_to_read_from_server">Unable to read data from server</string>
+    <string name="no_data_from_server">No data returned by server</string>
+    <string name="no_communication">Unable to communicate with ser ver</string>
+    <string name="no_download">Unable to download list</string>
+
+    <string name="menu_transactions">Transactions</string>
+    <string name="transactions_screen_title">Transactions</string>
+    <string name="menu_add_transaction_direct">Direct Transaction</string>
+    <string name="menu_add_transaction_multi_direct">Direct Transfer - Multiple</string>
+    <string name="menu_add_transaction_currency">Currency Transfer</string>
+    <string name="menu_add_transaction_party">Party Transfer</string>
+
+
+    <string name="menu_reports">Reports</string>
+    <string name="reports_screen_title">Reports</string>
+
+    <string name="dummy_text_short">dummy text</string>
+    <string name="dummy_text_long">This is dummy text</string>
+</resources>
