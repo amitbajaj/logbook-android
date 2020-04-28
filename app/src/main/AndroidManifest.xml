@@ -12,15 +12,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".ui.partyList.Parties"></activity>
         <activity android:name=".NavBarActivity" />
+
         <activity
             android:name=".ui.partyList.AddParty"
             android:parentActivityName=".NavBarActivity" />
+
+        <activity
+            android:name=".ui.transactionList.TransactionDirect"
+            android:parentActivityName=".NavBarActivity" />
+        <activity
+            android:name=".ui.transactionList.TransactionCurrency"
+            android:parentActivityName=".NavBarActivity" />
+        <activity
+            android:name=".ui.transactionList.TransactionParty"
+            android:parentActivityName=".NavBarActivity" />
+        <activity
+            android:name=".ui.transactionList.TransactionEdit"
+            android:parentActivityName=".NavBarActivity" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

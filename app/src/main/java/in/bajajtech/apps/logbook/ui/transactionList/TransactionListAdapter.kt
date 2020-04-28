@@ -2,17 +2,21 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
-class TransactionListAdapter(ctx: Context, app: Application): RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
+class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
     class TransactionViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val partyName: TextView = itemView.findViewById(R.id.text_party_name)
         val transactionType: TextView = itemView.findViewById(R.id.text_transaction_type)
@@ -25,6 +29,7 @@ class TransactionListAdapter(ctx: Context, app: Application): RecyclerView.Adapt
     }
     private var mInflater: LayoutInflater = LayoutInflater.from(ctx)
     private var mTransactions: TransactionListViewModel = TransactionListViewModel(app)
+    private val mParent = parent
 
     fun addTransaction(mNewTransaction: TransactionModel, mNotifyChange: Boolean=false){
         mTransactions.mTransactionList.add(mNewTransaction)
@@ -77,6 +82,11 @@ class TransactionListAdapter(ctx: Context, app: Application): RecyclerView.Adapt
                     holder.itemView.setBackgroundColor(Constants.ColorCodes.GRAY)
                 }else{
                     holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+                }
+                holder.itemView.setOnClickListener {
+                    val intent = Intent(it.context,TransactionEdit::class.java)
+                    intent.putExtra(Constants.TRANSACTION_ID,this)
+                    mParent.startActivityForResult(intent,Constants.ActivityIds.EDIT_TRANSACTION)
                 }
             }
         }

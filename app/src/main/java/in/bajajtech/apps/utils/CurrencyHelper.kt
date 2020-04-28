@@ -11,9 +11,12 @@ object CurrencyHelper {
         else-> "Invalid Currency"
     }
 
+    fun roundAsDouble(num: Double, decimals: Int = 2): Double = "%.${decimals}f".format(num).toDouble()
+    fun roundAsString(num: Double, decimals: Int = 2): String = "%.${decimals}f".format(num)
+
     private fun formatAmountAsINR(amt: Double): String{
         var retVal = ""
-        val amtParts = amt.toString().split(".")
+        val amtParts = roundAsString(amt,2).split(".")
         val wholePart = amtParts[0]
         var fractionPart = ""
         if(amtParts.size>1) fractionPart=amtParts[1]
@@ -36,7 +39,7 @@ object CurrencyHelper {
 
     private fun formatAmountAsUSD(amt: Double): String {
         var retVal = ""
-        val amtParts = amt.toString().split(".")
+        val amtParts = roundAsString(amt,2).split(".")
         val wholePart = amtParts[0]
         var fractionPart = ""
         if(amtParts.size>1) fractionPart=amtParts[1]
@@ -59,7 +62,7 @@ object CurrencyHelper {
 
     private fun formatAmountAsAED(amt: Double): String{
         var retVal = ""
-        val amtParts = amt.toString().split(".")
+        val amtParts = roundAsString(amt,3).split(".")
         val wholePart = amtParts[0]
         var fractionPart = ""
         if(amtParts.size>1) fractionPart=amtParts[1]

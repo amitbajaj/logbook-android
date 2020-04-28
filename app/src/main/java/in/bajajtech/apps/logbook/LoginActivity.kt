@@ -32,6 +32,9 @@ class LoginActivity : AppCompatActivity(){
         setContentView(R.layout.activity_login)
         sharedPrefs =
             PreferenceStore(applicationContext)
+        findViewById<EditText>(R.id.txt_username).setText("amitbajaj")
+        findViewById<EditText>(R.id.txt_password).setText("password")
+        doLogin(findViewById(R.id.btn_login))
     }
 
     fun doLogin(btn: View) {

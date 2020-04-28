@@ -2,13 +2,17 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.utils.CurrencyHelper
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.format.DateFormat
+import kotlinx.android.parcel.Parcelize
 import java.text.NumberFormat
 import java.util.*
 
-class TransactionModel {
+class TransactionModel : Parcelable {
     private var transactionId: Int = -1
     private var partyName: String = ""
+    private var partyId: Int = 0
     private var transactionDate: Date = Date()
     private var inrAmount: Double = 0.0
     private var usdAmount: Double = 0.0
@@ -18,13 +22,13 @@ class TransactionModel {
     private var exchangeCurrency: Int = 0
     private var comments: String = ""
     private var transactionType: Int = 0
-    private val nf = NumberFormat.getNumberInstance()
 
     fun setTransactionData(
-        mTiD: Int, mPartyName: String, mTDate: Date, mINRAmt: Double, mUSDAmt: Double, mAEDAmt: Double,
+        mTiD: Int, mPartyName: String, mPtyId: Int,mTDate: Date, mINRAmt: Double, mUSDAmt: Double, mAEDAmt: Double,
         mExchangeRate: Double, mExchangeDir: Int, mExchangeCurrency: Int, mComments: String, mTxnType: Int){
         transactionId = mTiD
         partyName = mPartyName
+        partyId  = mPtyId
         transactionDate = mTDate
         inrAmount = mINRAmt
         usdAmount = mUSDAmt
@@ -37,10 +41,11 @@ class TransactionModel {
     }
 
     fun setTransactionData(
-        mTiD: Int, mPartyName: String, mTDate: Date, mINRAmt: Double, mUSDAmt: Double, mAEDAmt: Double,
+        mTiD: Int, mPartyName: String, mPtyId: Int, mTDate: Date, mINRAmt: Double, mUSDAmt: Double, mAEDAmt: Double,
         mExchangeRate: Double, mExchangeDir: Int, mExchangeCurrency: Int, mComments: String, mTxnType: String){
         transactionId = mTiD
         partyName = mPartyName
+        partyId = mPtyId
         transactionDate = mTDate
         inrAmount = mINRAmt
         usdAmount = mUSDAmt
@@ -59,6 +64,7 @@ class TransactionModel {
 
     fun getTransactionId(): Int = this.transactionId
     fun getPartyName(): String = this.partyName
+    fun getPartyId(): Int = this.partyId
     fun getTransactionDate(): Date = this.transactionDate
     fun getTransactionDateText(): String = DateFormat.format("dd-MMM-yyyy", this.transactionDate).toString()
 
@@ -93,4 +99,54 @@ class TransactionModel {
 
     }
     fun getComments(): String = this.comments
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        with(dest){
+            writeInt(this@TransactionModel.transactionId)
+            writeString(this@TransactionModel.partyName)
+            writeInt(this@TransactionModel.partyId)
+            writeString(this@TransactionModel.transactionDate.toString())
+            writeDouble(this@TransactionModel.inrAmount)
+            writeDouble(this@TransactionModel.usdAmount)
+            writeDouble(this@TransactionModel.aedAmount)
+            writeDouble(this@TransactionModel.exchangeRate)
+            writeInt(this@TransactionModel.exchangeDirection)
+            writeInt(this@TransactionModel.exchangeCurrency)
+            writeString(this@TransactionModel.comments)
+            writeInt(this@TransactionModel.transactionType)
+        }
+
+    }
+
+    override fun describeContents(): Int = Parcelable.CONTENTS_FILE_DESCRIPTOR
+
+    companion object {
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<TransactionModel> {
+            override fun createFromParcel(source: Parcel): TransactionModel {
+                with(source){
+                    val mTxnId = readInt()
+                    val mPtyName = readString()
+                    val mPtyId = readInt()
+                    val dtString = readString()
+                    val mTxnDate = try{
+                        java.sql.Date.valueOf(dtString)
+                    }catch(ex: Exception){
+                        Date()
+                    }
+                    val mInrAmt = readDouble()
+                    val mUsdAmt = readDouble()
+                    val mAedAmt = readDouble()
+                    val mExhRate = readDouble()
+                    val mExhDir = readInt()
+                    val mExhCur = readInt()
+                    val mCmt = readString()
+                    val mType = readInt()
+                    val txnModel = TransactionModel()
+                    txnModel.setTransactionData(mTxnId,mPtyName!!,mPtyId,mTxnDate,mInrAmt,mUsdAmt,mAedAmt,mExhRate,mExhDir,mExhCur,mCmt!!,mType)
+                    return txnModel
+                }
+            }
+            override fun newArray(size: Int) = arrayOfNulls<TransactionModel>(size)
+        }
+    }
 }

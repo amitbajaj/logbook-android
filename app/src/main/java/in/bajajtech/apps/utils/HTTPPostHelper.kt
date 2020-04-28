@@ -3,9 +3,11 @@ package `in`.bajajtech.apps.utils
 import `in`.bajajtech.apps.logbook.Constants
 import java.io.*
 import java.net.URL
+import java.net.URLEncoder
 import javax.net.ssl.HttpsURLConnection
 
 object HTTPPostHelper {
+    fun encode(src: String): String = URLEncoder.encode(src,"utf-8")
     fun doHTTPPost(urlString: String, sessionId: String, data: String): Pair<String,String>? {
         val url = URL(urlString)
         var connection: HttpsURLConnection? = null

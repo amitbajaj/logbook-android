@@ -36,13 +36,11 @@ class Parties : Fragment() {
         preferenceStore = PreferenceStore(view.context)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.viewPartyList)
-        adapter = PartyListAdapter(this.context!!, activity?.application!!)
+        adapter = PartyListAdapter(this.context!!, activity?.application!!, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(view.context)
 
         loadParties()
-
-        //text_parties.text = getString(R.string.party_screen_title)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -81,7 +79,7 @@ class Parties : Fragment() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(adapter.getNewId(),itemObject["name"].toString(),itemObject["inrbal"].toString().toDouble(),itemObject["usdbal"].toString().toDouble(),itemObject["aedbal"].toString().toDouble())
+                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),itemObject["inrbal"].toString().toDouble(),itemObject["usdbal"].toString().toDouble(),itemObject["aedbal"].toString().toDouble())
                                     adapter.addParty(partyModel,false)
                                 }
                                 activity?.runOnUiThread{processMessage(true,"")}
@@ -115,6 +113,10 @@ class Parties : Fragment() {
         }
         showProgress(false)
     }
+    private fun showProgress(visibility: Boolean){
+        view!!.findViewById<ProgressBar>(R.id.partiesProgressBar).visibility = if(visibility) View.VISIBLE else View.GONE
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -123,17 +125,27 @@ class Parties : Fragment() {
                 if(resultCode == Activity.RESULT_OK){
                     val status = data!!.getBooleanExtra(Constants.ACTIVITY_RESULT_KEY,false)
                     if(status){
-                        UIHelper.showAlert(view!!.context,getString(R.string.add_party),getString(R.string.party_saved))
+                        UIHelper.showAlert(view!!.context,getString(R.string.title_save_party_new),getString(R.string.party_saved))
                         loadParties()
                     }else{
-                        UIHelper.showAlert(view!!.context,getString(R.string.add_party),getString(R.string.party_not_saved))
+                        UIHelper.showAlert(view!!.context,getString(R.string.title_save_party_new),getString(R.string.party_not_saved))
                     }
                 }
             }
+            Constants.ActivityIds.EDIT_PARTY->{
+                if(resultCode == Activity.RESULT_OK){
+                    val status = data!!.getBooleanExtra(Constants.ACTIVITY_RESULT_KEY,false)
+                    if(status){
+                        UIHelper.showAlert(view!!.context,getString(R.string.title_save_party_edit),getString(R.string.party_saved))
+                        loadParties()
+                    }else{
+                        UIHelper.showAlert(view!!.context,getString(R.string.title_save_party_edit),getString(R.string.party_not_saved))
+                    }
+                }
+            }
+
         }
     }
 
-    private fun showProgress(visibility: Boolean){
-        view!!.findViewById<ProgressBar>(R.id.partiesProgressBar).visibility = if(visibility) View.VISIBLE else View.GONE
-    }
+
 }
