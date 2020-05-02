@@ -1,4 +1,4 @@
-package `in`.bajajtech.apps.logbook.ui.partyList
+package `in`.bajajtech.apps.logbook.ui.models
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

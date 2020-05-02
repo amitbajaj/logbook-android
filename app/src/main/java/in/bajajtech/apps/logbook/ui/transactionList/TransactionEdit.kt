@@ -5,7 +5,8 @@ import `in`.bajajtech.apps.logbook.R
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
 import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
-import `in`.bajajtech.apps.logbook.ui.partyList.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import `in`.bajajtech.apps.utils.*
 import android.app.Activity
 import android.content.Intent
@@ -31,7 +32,6 @@ class TransactionEdit: AppCompatActivity() {
         title = getString(R.string.title_edit_transaction)
         setContentView(R.layout.activity_edit_transaction)
         val params = intent.extras
-        val ptyName = findViewById<Spinner>(R.id.txn_edit_party_name)
         if(params==null){
             UIHelper.showAlert(this,getString(R.string.title_edit_transaction),getString(R.string.no_txn_data))
             onBackPressed()
@@ -97,7 +97,8 @@ class TransactionEdit: AppCompatActivity() {
                                 var selectedPartyIndex = 0
                                 dataArray.forEach {
                                     itemObject = it as JSONObject
-                                    partyModel = PartyModel()
+                                    partyModel =
+                                        PartyModel()
                                     partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
                                     if(partyModel.getPartyId()==selectedPartyId) selectedPartyIndex = iCounter
                                     partyList.add(partyModel)

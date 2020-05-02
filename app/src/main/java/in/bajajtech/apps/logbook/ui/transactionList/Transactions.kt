@@ -2,10 +2,12 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.TransactionListAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
 import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
-import `in`.bajajtech.apps.logbook.ui.partyList.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
 import `in`.bajajtech.apps.utils.PreferenceStore
@@ -15,6 +17,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +32,7 @@ class Transactions: Fragment() {
     private var dtFrom = ""
     private var dtTo = ""
     private var partyListString = ""
+    private var accessId: Int? = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +48,12 @@ class Transactions: Fragment() {
         preferenceStore = PreferenceStore(view.context)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.viewTransactionList)
-        adapter = TransactionListAdapter(this.context!!, activity?.application!!, this)
+        adapter = TransactionListAdapter(
+            this.context!!,
+            activity?.application!!,
+            this,
+            true
+        )
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(view.context)
         view.findViewById<Button>(R.id.txn_list_from_date).setOnClickListener { showDate(it) }
@@ -55,6 +64,14 @@ class Transactions: Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_transactions,menu)
+        accessId = preferenceStore.getValue(Constants.PrefKeyAccessId).toIntOrNull()
+        if(accessId==null){
+            accessId=Constants.STAFF_ACCESS_ID
+        }
+        if(accessId!=Constants.ADMIN_ACCESS_ID){
+            menu[0].isVisible=false
+            menu[1].isVisible=false
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -139,7 +156,7 @@ class Transactions: Fragment() {
     }
 
     private fun loadTransactions(){
-        showProgress(true)
+        enableControls(true)
         val dtOFrom = view!!.findViewById<Button>(R.id.txn_list_from_date).tag as DateObject?
         dtFrom = dtOFrom?.getDate() ?: ""
         val dtOTo = view!!.findViewById<Button>(R.id.txn_list_to_date).tag as DateObject?
@@ -166,7 +183,8 @@ class Transactions: Fragment() {
                                 adapter.removeAllTransactions()
                                 dataArray.forEach {
                                     itemObject = it as JSONObject
-                                    transactionModel = TransactionModel()
+                                    transactionModel =
+                                        TransactionModel()
                                     transactionModel.setTransactionData(
                                         itemObject["tid"].toString().toInt(),
                                         itemObject["pty"].toString(),
@@ -204,7 +222,7 @@ class Transactions: Fragment() {
     }
 
     private fun loadParties(){
-        showProgress(true)
+        enableControls(true)
         CompletableFuture.runAsync{
             val sessionId = preferenceStore.getValue(Constants.PrefKeySessionId)
             val dataString = "mode=QRY"
@@ -221,7 +239,8 @@ class Transactions: Fragment() {
                                 partyList.clear()
                                 dataArray.forEach {
                                     itemObject = it as JSONObject
-                                    partyModel = PartyModel()
+                                    partyModel =
+                                        PartyModel()
                                     partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
                                     partyList.add(partyModel)
                                 }
@@ -256,7 +275,7 @@ class Transactions: Fragment() {
         }else{
             UIHelper.showAlert(this.context!!,getString(R.string.transactions_screen_title),message)
         }
-        showProgress(false)
+        enableControls(false)
 
     }
 
@@ -267,10 +286,10 @@ class Transactions: Fragment() {
         }else{
             UIHelper.showAlert(this.context!!,getString(R.string.transactions_screen_title),message)
         }
-        showProgress(false)
+        enableControls(false)
     }
 
-    private fun showProgress(visibility: Boolean){
+    private fun enableControls(visibility: Boolean){
         view!!.findViewById<ProgressBar>(R.id.transactionsProgressBar).visibility = if(visibility) View.VISIBLE else View.GONE
         view!!.findViewById<Button>(R.id.txn_list_from_date).isEnabled=!visibility
         view!!.findViewById<Button>(R.id.txn_list_to_date).isEnabled=!visibility

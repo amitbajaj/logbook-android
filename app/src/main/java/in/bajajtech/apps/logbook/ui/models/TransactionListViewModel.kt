@@ -1,5 +1,6 @@
-package `in`.bajajtech.apps.logbook.ui.transactionList
+package `in`.bajajtech.apps.logbook.ui.models
 
+import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 

@@ -6,14 +6,24 @@ object Constants {
     private const val BaseDomain = "dev.bajajtech.in"
     private const val BaseURL = "https://".plus(BaseDomain).plus("/logbook")
     const val LoginURL = BaseURL.plus("/code/login.php")
+    const val LogoutURL = BaseURL.plus("/code/logout.php")
     const val PartiesCodeURL = BaseURL.plus("/code/actions/parties.php")
     const val TransactionsCodeURL = BaseURL.plus("/code/actions/txns.php")
+    const val ReportsCodeURL = BaseURL.plus("/code/actions/reports.php")
+    const val UsersCodeURL = BaseURL.plus("/code/actions/users.php")
     const val SessionCookieName = "PHPSESSID"
     const val PrefKeySessionId = "sessionId"
+    const val PrefKeyAccessId = "accessId"
+
+    const val ADMIN_ACCESS_ID = 1
+    const val ADMIN_ACCESS_DESCRIPTION = "Admin"
+    const val STAFF_ACCESS_ID = 2
+    const val STAFF_ACCESS_DESCRIPTION = "Staff"
 
     const val PRIVATE_MODE=0
     const val STORE_NAME="MyPrefs"
     private const val INVALID_VALUE = -1
+    const val INVALID_DESCRIPTION = "Unknown"
 
     object ColorCodes{
         const val RED = Color.RED
@@ -56,12 +66,16 @@ object Constants {
         const val EDIT_TRANSACTION = 205
         const val EDIT_TRANSACTION_EDIT_ACTION = 2051
         const val EDIT_TRANSACTION_DELETE_ACTION = 2052
+        const val ADD_USER = 300
+        const val EDIT_USER = 301
+        const val UPDATE_PASSWORD = 302
     }
 
     const val ACTIVITY_RESULT_KEY = "status"
     const val SUB_ACTIVITY_KEY = "action"
     const val TRANSACTION_ID = "txnid"
     const val PARTY_ID = "ptyId"
+    const val USER_ID = "userId"
 
     object TransactionTypes{
         const val DIRECT = 1
@@ -106,5 +120,8 @@ object Constants {
         private const val INT_EMPTY_BOX = 0X2610
         const val EMPTY_BOX = INT_EMPTY_BOX.toChar().toString()
     }
+
+    const val OPENING_BALANCE = 1
+    const val CLOSING_BALANCE = 2
 
 }

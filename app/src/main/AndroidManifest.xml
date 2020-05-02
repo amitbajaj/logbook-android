@@ -30,6 +30,9 @@
         <activity
             android:name=".ui.transactionList.TransactionEdit"
             android:parentActivityName=".NavBarActivity" />
+        <activity
+            android:name=".ui.users.AddUser"
+            android:parentActivityName=".NavBarActivity" />
 
         <activity android:name=".LoginActivity">
             <intent-filter>

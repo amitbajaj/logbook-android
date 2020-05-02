@@ -1,8 +1,10 @@
-package `in`.bajajtech.apps.logbook.ui.transactionList
+package `in`.bajajtech.apps.logbook.ui.adapters
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
-import android.app.Activity
+import `in`.bajajtech.apps.logbook.ui.models.TransactionListViewModel
+import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
+import `in`.bajajtech.apps.logbook.ui.transactionList.TransactionEdit
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -12,11 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
-class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
+class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment, editable: Boolean): RecyclerView.Adapter<TransactionListAdapter.TransactionViewHolder>() {
     class TransactionViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val partyName: TextView = itemView.findViewById(R.id.text_party_name)
         val transactionType: TextView = itemView.findViewById(R.id.text_transaction_type)
@@ -27,9 +28,10 @@ class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): 
         val amount: TextView = itemView.findViewById(R.id.text_amount)
         val comments: TextView = itemView.findViewById(R.id.text_comments)
     }
-    private var mInflater: LayoutInflater = LayoutInflater.from(ctx)
-    private var mTransactions: TransactionListViewModel = TransactionListViewModel(app)
+    private val mInflater: LayoutInflater = LayoutInflater.from(ctx)
+    private val mTransactions: TransactionListViewModel = TransactionListViewModel(app)
     private val mParent = parent
+    private val mEditable = editable
 
     fun addTransaction(mNewTransaction: TransactionModel, mNotifyChange: Boolean=false){
         mTransactions.mTransactionList.add(mNewTransaction)
@@ -47,7 +49,9 @@ class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): 
         viewType: Int
     ): TransactionViewHolder {
         val itemView: View = mInflater.inflate(R.layout.list_item_transaction,parent,false)
-        return TransactionViewHolder(itemView)
+        return TransactionViewHolder(
+            itemView
+        )
     }
 
     override fun getItemCount(): Int = mTransactions.mTransactionList.size
@@ -62,7 +66,7 @@ class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): 
                 holder.transactionType.text = getTransactionTypeText()
                 holder.transactionDate.text = getTransactionDateText()
                 if(getTransactionType()==Constants.TransactionTypes.DIRECT){
-                    holder.exchangeSection.visibility=View.GONE
+                    holder.exchangeSection.visibility=View.INVISIBLE
                 }else{
                     holder.exchangeSection.visibility=View.VISIBLE
                     holder.exchangeAmount.text = getExchangeRateText()
@@ -70,12 +74,15 @@ class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): 
                 }
                 if(getAmount(Constants.Currencies.INR)!=0.0){
                     holder.amount.text = getFormattedAmount(Constants.Currencies.INR)
+                    holder.amount.setTextColor(getAmountColorCode(Constants.Currencies.INR))
                 }
                 if(getAmount(Constants.Currencies.USD)!=0.0){
                     holder.amount.text = getFormattedAmount(Constants.Currencies.USD)
+                    holder.amount.setTextColor(getAmountColorCode(Constants.Currencies.USD))
                 }
                 if(getAmount(Constants.Currencies.AED)!=0.0){
                     holder.amount.text = getFormattedAmount(Constants.Currencies.AED)
+                    holder.amount.setTextColor(getAmountColorCode(Constants.Currencies.AED))
                 }
                 holder.comments.text = getComments()
                 if(position%2==0){
@@ -83,10 +90,13 @@ class TransactionListAdapter(ctx: Context, app: Application, parent: Fragment): 
                 }else{
                     holder.itemView.setBackgroundColor(Color.TRANSPARENT)
                 }
-                holder.itemView.setOnClickListener {
-                    val intent = Intent(it.context,TransactionEdit::class.java)
-                    intent.putExtra(Constants.TRANSACTION_ID,this)
-                    mParent.startActivityForResult(intent,Constants.ActivityIds.EDIT_TRANSACTION)
+                if(mEditable){
+                    holder.itemView.setOnClickListener {
+                        val intent = Intent(it.context,
+                            TransactionEdit::class.java)
+                        intent.putExtra(Constants.TRANSACTION_ID,this)
+                        mParent.startActivityForResult(intent,Constants.ActivityIds.EDIT_TRANSACTION)
+                    }
                 }
             }
         }

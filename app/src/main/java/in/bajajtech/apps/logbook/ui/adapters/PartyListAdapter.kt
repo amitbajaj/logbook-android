@@ -1,7 +1,10 @@
-package `in`.bajajtech.apps.logbook.ui.partyList
+package `in`.bajajtech.apps.logbook.ui.adapters
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.models.PartyListViewModel
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
+import `in`.bajajtech.apps.logbook.ui.partyList.AddParty
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -25,7 +28,8 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : Recyc
     }
 
     private var mInflater: LayoutInflater = LayoutInflater.from(ctx)
-    private var mParties: PartyListViewModel = PartyListViewModel(app)
+    private var mParties: PartyListViewModel =
+        PartyListViewModel(app)
     private val mParent = parent
 
     fun addParty(mNewParty: PartyModel, mNotifyChange: Boolean=true){
@@ -37,19 +41,11 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : Recyc
         mParties.partyList.clear()
     }
 
-    fun getNewId(): Int{
-        var newId = 0
-        mParties.partyList.forEach{
-            if(it.getPartyId()>=newId){
-                newId = it.getPartyId()+1
-            }
-        }
-        return newId
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartyViewHolder {
         val itemView: View = mInflater.inflate(R.layout.list_item_party,parent,false)
-        return PartyViewHolder(itemView)
+        return PartyViewHolder(
+            itemView
+        )
     }
 
     override fun getItemCount(): Int {
@@ -83,7 +79,8 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : Recyc
                     }
                 }
                 holder.editButton.setOnClickListener {
-                    val intent = Intent(it.context,AddParty::class.java)
+                    val intent = Intent(it.context,
+                        AddParty::class.java)
                     intent.putExtra(Constants.PARTY_ID,this)
                     mParent.startActivityForResult(intent,Constants.ActivityIds.EDIT_PARTY)
                 }

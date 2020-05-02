@@ -1,12 +1,11 @@
-package `in`.bajajtech.apps.logbook.ui.transactionList
+package `in`.bajajtech.apps.logbook.ui.models
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.utils.CurrencyHelper
+import android.graphics.Color
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.format.DateFormat
-import kotlinx.android.parcel.Parcelize
-import java.text.NumberFormat
 import java.util.*
 
 class TransactionModel : Parcelable {
@@ -80,6 +79,29 @@ class TransactionModel : Parcelable {
         Constants.Currencies.AED -> this.aedAmount
         else-> 0.0
     }
+
+    fun getAmountColorCode(currency: Int): Int = when(currency){
+        Constants.Currencies.INR->if(inrAmount<0){
+            Constants.ColorCodes.RED
+        }else{
+            Constants.ColorCodes.GREEN
+        }
+
+        Constants.Currencies.USD->if(usdAmount<0){
+            Constants.ColorCodes.RED
+        }else{
+            Constants.ColorCodes.GREEN
+        }
+
+        Constants.Currencies.AED->if(aedAmount<0){
+            Constants.ColorCodes.RED
+        }else{
+            Constants.ColorCodes.GREEN
+        }
+
+        else-> Color.BLACK
+    }
+
     fun getExchangeRate(): Double = this.exchangeRate
     fun getExchangeRateText(): String {
         return CurrencyHelper.formatAmount(this.exchangeRate, exchangeCurrency)
@@ -141,7 +163,8 @@ class TransactionModel : Parcelable {
                     val mExhCur = readInt()
                     val mCmt = readString()
                     val mType = readInt()
-                    val txnModel = TransactionModel()
+                    val txnModel =
+                        TransactionModel()
                     txnModel.setTransactionData(mTxnId,mPtyName!!,mPtyId,mTxnDate,mInrAmt,mUsdAmt,mAedAmt,mExhRate,mExhDir,mExhCur,mCmt!!,mType)
                     return txnModel
                 }

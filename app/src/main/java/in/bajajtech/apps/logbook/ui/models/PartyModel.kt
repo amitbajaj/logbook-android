@@ -1,4 +1,4 @@
-package `in`.bajajtech.apps.logbook.ui.partyList
+package `in`.bajajtech.apps.logbook.ui.models
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.utils.CurrencyHelper

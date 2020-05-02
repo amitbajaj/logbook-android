@@ -17,4 +17,17 @@
         android:enabled="true"
         android:title="@string/menu_reports"
         android:icon="@drawable/ic_format_list_bulleted_black_24dp" />
+
+    <item
+        android:id="@+id/menu_user_maintenance"
+        android:enabled="true"
+        android:title="@string/menu_user_maintenance"
+        android:icon="@drawable/ic_people_black_24dp" />
+
+    <item
+        android:id="@+id/menu_settings"
+        android:enabled="true"
+        android:title="@string/menu_settings"
+        android:icon="@drawable/ic_settings_black_24dp" />
+
 </menu>

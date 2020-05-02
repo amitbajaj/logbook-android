@@ -2,16 +2,14 @@ package `in`.bajajtech.apps.logbook.ui.controls
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
-import `in`.bajajtech.apps.logbook.ui.partyList.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.CheckedTextView
 import android.widget.Spinner
 import android.widget.TextView
-import org.w3c.dom.Text
 
 class PartyNameAdapter(private val ctx: Context, private val res: Int, private val partyList: List<PartyModel>, private val multiSelect: Boolean, private val holder: Spinner):ArrayAdapter<PartyModel>(ctx,res,partyList.toTypedArray()) {
 

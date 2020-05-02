@@ -5,7 +5,7 @@ import `in`.bajajtech.apps.logbook.R
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
 import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
-import `in`.bajajtech.apps.logbook.ui.partyList.PartyModel
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
 import `in`.bajajtech.apps.utils.PreferenceStore
@@ -63,7 +63,8 @@ class TransactionDirect: AppCompatActivity() {
                                 partyList.clear()
                                 dataArray.forEach {
                                     itemObject = it as JSONObject
-                                    partyModel = PartyModel()
+                                    partyModel =
+                                        PartyModel()
                                     partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
                                     partyList.add(partyModel)
                                 }

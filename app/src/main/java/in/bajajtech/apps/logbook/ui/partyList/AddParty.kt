@@ -2,6 +2,7 @@ package `in`.bajajtech.apps.logbook.ui.partyList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
 import `in`.bajajtech.apps.utils.PreferenceStore
@@ -116,7 +117,7 @@ class AddParty : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        println("I am in options item")
+//        println("I am in options item")
         when(item.itemId){
             android.R.id.home->{
                 onBackPressed()

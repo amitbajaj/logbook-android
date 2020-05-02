@@ -98,7 +98,7 @@ object HTTPPostHelper {
         }
         bReader.close()
 //        publishProgress(PROCESS_INPUT_STREAM_SUCCESS)
-//        println("Processing incoming data ".plus(response))
+//        println("Processing incoming data $response")
         return response
     }
 }
