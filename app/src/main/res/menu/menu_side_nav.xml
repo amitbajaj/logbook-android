@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/main_menu_group">
+        <item
+            android:id="@+id/menu_groups"
+            android:enabled="true"
+            android:icon="@drawable/ic_group_work_black_24dp"
+            android:title="@string/menu_groups" />
+
+        <item
+            android:id="@+id/menu_parties"
+            android:enabled="true"
+            android:icon="@drawable/ic_people_black_24dp"
+            android:title="@string/menu_parties" />
+        <item
+            android:id="@+id/menu_transactions"
+            android:enabled="true"
+            android:icon="@drawable/ic_compare_arrows_black_24dp"
+            android:title="@string/menu_transactions" />
+
+        <item
+            android:id="@+id/menu_reports"
+            android:enabled="true"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:title="@string/menu_reports" />
+
+        <item
+            android:id="@+id/menu_user_maintenance"
+            android:enabled="true"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/menu_user_maintenance" />
+    </group>
+    <group android:id="@+id/secondary_menu_group">
+
+
+        <item
+            android:id="@+id/menu_settings"
+            android:enabled="true"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/menu_settings" />
+
+    </group>
+</menu>

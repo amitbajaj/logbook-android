@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.partyList.AddParty">
+    tools:context=".ui.groupList.AddGroup">
 
     <EditText
-        android:id="@+id/txt_party_name"
+        android:id="@+id/txt_group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/party_name"
+        android:hint="@string/group_name"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_save_party"
+        android:id="@+id/btn_save_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save_party"
+        android:text="@string/save_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_party_name" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_group_name" />
 
 
     <ProgressBar
-        android:id="@+id/addPartyProgressBar"
+        android:id="@+id/addGroupProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

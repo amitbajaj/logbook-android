@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.transactionList.Transactions"
-    android:paddingBottom="?attr/actionBarSize">
+    android:paddingBottom="@dimen/bottomPaddingForFragments">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        style="?android:attr/buttonBarStyle"
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
 
 
         <Button
@@ -26,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/from_date" />
 
         <Button
@@ -33,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"
             android:text="@string/to_date"/>
     </LinearLayout>
 

@@ -131,4 +131,18 @@
     <string name="message_setting_invalid_new_password">Enter new password</string>
     <string name="button_text_update_password">Update Password</string>
     <string name="button_text_logout">Logout</string>
+
+    <string name="menu_groups">Groups</string>
+    <string name="groups_screen_title">Groups</string>
+    <string name="group_name">Group Name</string>
+    <string name="save_group">Save Group</string>
+    <string name="menu_add_group">Add Group</string>
+    <string name="add_group">Add Group</string>
+    <string name="title_save_group_new">Add Group</string>
+    <string name="title_save_group_edit">Edit Group</string>
+    <string name="message_group_saved">Group saved</string>
+    <string name="message_group_not_saved">Group could not be saved</string>
+    <string name="message_group_updated">Group updated successfully</string>
+    <string name="message_group_not_updated">Group could not be updated</string>
+    <string name="message_enter_group">Enter group name to save</string>
 </resources>

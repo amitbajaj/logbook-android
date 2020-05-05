@@ -9,14 +9,13 @@ import `in`.bajajtech.apps.utils.PreferenceStore
 import `in`.bajajtech.apps.utils.UIHelper
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import java.lang.Exception
+import androidx.appcompat.app.AppCompatActivity
 import java.net.URLEncoder
 import java.util.concurrent.CompletableFuture
 
@@ -47,9 +46,11 @@ class AddParty : AppCompatActivity() {
         else
             getString(R.string.title_save_party_edit)
 
+        findViewById<Button>(R.id.btn_save_party).setOnClickListener { saveParty() }
+
     }
 
-    fun saveParty(btn: View){
+    private fun saveParty() {
         val partyNameControl =findViewById<EditText>(R.id.txt_party_name)
         val partyName = partyNameControl.text.toString()
         if(partyName.isEmpty()){
@@ -124,7 +125,7 @@ class AddParty : AppCompatActivity() {
                 return true
             }
         }
-        return false;
+        return false
     }
 
     private fun enableControls(mode: Boolean){

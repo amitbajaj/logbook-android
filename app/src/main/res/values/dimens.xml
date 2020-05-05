@@ -9,4 +9,6 @@
     <dimen name="layout_horizontal_spacing">42dp</dimen>
     <dimen name="edit_icon_width">24dp</dimen>
     <dimen name="edit_icon_height">24dp</dimen>
+    <!--    <dimen name="bottomPaddingForFragments">?attr/actionBarSize</dimen>-->
+    <dimen name="bottomPaddingForFragments">0dp</dimen>
 </resources>

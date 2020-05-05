@@ -1,12 +1,14 @@
 package `in`.bajajtech.apps.logbook
 
 import android.graphics.Color
+import java.util.*
 
 object Constants {
     private const val BaseDomain = "dev.bajajtech.in"
     private const val BaseURL = "https://".plus(BaseDomain).plus("/logbook")
     const val LoginURL = BaseURL.plus("/code/login.php")
     const val LogoutURL = BaseURL.plus("/code/logout.php")
+    const val GroupsCodeURL = BaseURL.plus("/code/actions/groups.php")
     const val PartiesCodeURL = BaseURL.plus("/code/actions/parties.php")
     const val TransactionsCodeURL = BaseURL.plus("/code/actions/txns.php")
     const val ReportsCodeURL = BaseURL.plus("/code/actions/reports.php")
@@ -69,6 +71,8 @@ object Constants {
         const val ADD_USER = 300
         const val EDIT_USER = 301
         const val UPDATE_PASSWORD = 302
+        const val ADD_GROUP = 400
+        const val EDIT_GROUP = 401
     }
 
     const val ACTIVITY_RESULT_KEY = "status"
@@ -76,6 +80,11 @@ object Constants {
     const val TRANSACTION_ID = "txnid"
     const val PARTY_ID = "ptyId"
     const val USER_ID = "userId"
+
+    object GroupObject {
+        const val ID = "groupId"
+        const val NAME = "groupName"
+    }
 
     object TransactionTypes{
         const val DIRECT = 1
@@ -94,9 +103,10 @@ object Constants {
         const val REVERSE_DESCRIPTION = "Reverse"
     }
 
-    fun getExchangeDirection(direction: String): Int = when(direction.toLowerCase()){
-        ExchangeDirections.FORWARD_DESCRIPTION.toLowerCase()->ExchangeDirections.FORWARD
-        ExchangeDirections.REVERSE_DESCRIPTION.toLowerCase()->ExchangeDirections.REVERSE
+    fun getExchangeDirection(direction: String): Int =
+        when (direction.toLowerCase(Locale.getDefault())) {
+            ExchangeDirections.FORWARD_DESCRIPTION.toLowerCase(Locale.getDefault()) -> ExchangeDirections.FORWARD
+            ExchangeDirections.REVERSE_DESCRIPTION.toLowerCase(Locale.getDefault()) -> ExchangeDirections.REVERSE
         else-> INVALID_VALUE
     }
 
@@ -107,9 +117,10 @@ object Constants {
         const val DEBIT_DESCRIPTION = "Debit"
     }
 
-    fun getTransactionSubType(subType: String): Int= when(subType.toLowerCase()){
-        TransactionSubTypes.CREDIT_DESCRIPTION.toLowerCase()->TransactionSubTypes.CREDIT
-        TransactionSubTypes.DEBIT_DESCRIPTION.toLowerCase()->TransactionSubTypes.DEBIT
+    fun getTransactionSubType(subType: String): Int =
+        when (subType.toLowerCase(Locale.getDefault())) {
+            TransactionSubTypes.CREDIT_DESCRIPTION.toLowerCase(Locale.getDefault()) -> TransactionSubTypes.CREDIT
+            TransactionSubTypes.DEBIT_DESCRIPTION.toLowerCase(Locale.getDefault()) -> TransactionSubTypes.DEBIT
         else-> INVALID_VALUE
     }
 

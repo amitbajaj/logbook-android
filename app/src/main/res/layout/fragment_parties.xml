@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.partyList.Parties"
-    android:paddingBottom="?attr/actionBarSize">
+    android:paddingBottom="@dimen/bottomPaddingForFragments">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/viewPartyList"

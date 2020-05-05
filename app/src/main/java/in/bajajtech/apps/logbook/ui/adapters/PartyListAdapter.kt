@@ -18,7 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_party.view.*
 
-class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : RecyclerView.Adapter<PartyListAdapter.PartyViewHolder>() {
+class PartyListAdapter(ctx: Context, app: Application, parent: Fragment, editable: Boolean = true) :
+    RecyclerView.Adapter<PartyListAdapter.PartyViewHolder>() {
     class PartyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val partyName: TextView = itemView.findViewById(R.id.txn_direct_party_name)
         val inrBalance: TextView = itemView.findViewById(R.id.amount_inr)
@@ -31,6 +32,7 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : Recyc
     private var mParties: PartyListViewModel =
         PartyListViewModel(app)
     private val mParent = parent
+    private val isEditable = editable
 
     fun addParty(mNewParty: PartyModel, mNotifyChange: Boolean=true){
         mParties.partyList.add(mNewParty)
@@ -78,11 +80,18 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment) : Recyc
                         View.VISIBLE
                     }
                 }
-                holder.editButton.setOnClickListener {
-                    val intent = Intent(it.context,
-                        AddParty::class.java)
-                    intent.putExtra(Constants.PARTY_ID,this)
-                    mParent.startActivityForResult(intent,Constants.ActivityIds.EDIT_PARTY)
+                if (isEditable) {
+                    holder.editButton.visibility = View.VISIBLE
+                    holder.editButton.setOnClickListener {
+                        val intent = Intent(
+                            it.context,
+                            AddParty::class.java
+                        )
+                        intent.putExtra(Constants.PARTY_ID, this)
+                        mParent.startActivityForResult(intent, Constants.ActivityIds.EDIT_PARTY)
+                    }
+                } else {
+                    holder.editButton.visibility = View.GONE
                 }
                 if(position%2==0){
                     holder.itemView.setBackgroundColor(Constants.ColorCodes.GRAY)

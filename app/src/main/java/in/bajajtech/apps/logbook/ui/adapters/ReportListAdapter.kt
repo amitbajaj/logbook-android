@@ -4,7 +4,6 @@ import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
 import `in`.bajajtech.apps.logbook.ui.models.ReportListViewModel
 import `in`.bajajtech.apps.logbook.ui.models.ReportModel
-import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
@@ -32,7 +31,7 @@ class ReportListAdapter(ctx: Context,app: Application, parent: Fragment): Recycl
         val mTransactionList: RecyclerView = itemView.findViewById(R.id.report_transaction_list)
 
     }
-    private val mContext = ctx
+
     private val mApp = app
     private val mInflater = LayoutInflater.from(ctx)
     private val mEntries = ReportListViewModel(app)
@@ -49,7 +48,7 @@ class ReportListAdapter(ctx: Context,app: Application, parent: Fragment): Recycl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
-        val itemView = mInflater.inflate(R.layout.list_item_report_header,parent,false)
+        val itemView = mInflater.inflate(R.layout.list_item_report, parent, false)
         return ReportViewHolder(itemView)
     }
 
