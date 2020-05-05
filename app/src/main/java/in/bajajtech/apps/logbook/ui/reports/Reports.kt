@@ -2,11 +2,10 @@ package `in`.bajajtech.apps.logbook.ui.reports
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.adapters.ReportListAdapter
-import `in`.bajajtech.apps.logbook.ui.adapters.TransactionListAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.logbook.ui.models.ReportModel
 import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
@@ -81,7 +80,15 @@ class Reports: Fragment() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     partyList.add(partyModel)
                                 }
                                 activity?.runOnUiThread{processPartyMessage(true,"")}
@@ -108,7 +115,14 @@ class Reports: Fragment() {
     private fun processPartyMessage(status: Boolean, message: String){
         if(status){
             val spinner = view!!.findViewById<Spinner>(R.id.report_parties)
-            val adapter = PartyNameAdapter(this.context!!,R.layout.spinner_item_partyname,partyList,true, spinner)
+            val adapter =
+                PartyNameAdapter(
+                    this.context!!,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    true,
+                    spinner
+                )
             spinner.adapter=adapter
             adapter.notifyDataSetChanged()
 
@@ -141,7 +155,7 @@ class Reports: Fragment() {
                             val (status,dataObject) = JSONHelper.parseResponse(result.second,"data","code")
                             if(status){
                                 try{
-                                    var dataArray = dataObject as JSONArray
+                                    val dataArray = dataObject as JSONArray
                                     var reportModel: ReportModel
                                     var transactionModel: TransactionModel
                                     var itemObject: JSONObject

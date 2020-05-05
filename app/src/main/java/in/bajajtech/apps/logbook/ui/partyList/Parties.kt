@@ -80,16 +80,31 @@ class Parties : Fragment() {
                                 val dataArray = (dataObject as JSONArray)
                                 var partyModel: PartyModel
                                 var itemObject: JSONObject
+                                var gid: Int
                                 adapter.removeAllParties()
                                 dataArray.forEach {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),itemObject["inrbal"].toString().toDouble(),itemObject["usdbal"].toString().toDouble(),itemObject["aedbal"].toString().toDouble())
+                                    gid = if (itemObject["gid"].toString().isEmpty()) {
+                                        0
+                                    } else {
+                                        itemObject["gid"].toString().toInt()
+                                    }
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        gid,
+                                        itemObject["gname"].toString(),
+                                        itemObject["inrbal"].toString().toDouble(),
+                                        itemObject["usdbal"].toString().toDouble(),
+                                        itemObject["aedbal"].toString().toDouble()
+                                    )
                                     adapter.addParty(partyModel,false)
                                 }
                                 activity?.runOnUiThread{processMessage(true,"")}
                             }catch(ex: Exception){
+                                println(ex)
                                 activity?.runOnUiThread{ processMessage(false,getString(R.string.unable_to_process_data))}
                             }
 

@@ -2,9 +2,9 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
@@ -31,6 +31,7 @@ class TransactionParty: AppCompatActivity() {
         title = getString(R.string.menu_add_transaction_party)
         setContentView(R.layout.activity_add_transaction_party)
         findViewById<Button>(R.id.txn_party_date).setOnClickListener { showDate(it) }
+        findViewById<Button>(R.id.save_party_transaction).setOnClickListener { savePartyTransaction() }
         val firstCurrencySpinner = findViewById<Spinner>(R.id.txn_party_currency_first)
         val secondCurrencySpinner = findViewById<Spinner>(R.id.txn_party_currency_second)
         val exchangeDirectionSpinner = findViewById<Spinner>(R.id.txn_party_exchange_direction)
@@ -66,7 +67,15 @@ class TransactionParty: AppCompatActivity() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     partyList.add(partyModel)
                                 }
                                 runOnUiThread{processPartyMessage(true,"")}
@@ -94,8 +103,22 @@ class TransactionParty: AppCompatActivity() {
         if(status){
             val spinnerFirst = findViewById<Spinner>(R.id.txn_party_first)
             val spinnerSecond = findViewById<Spinner>(R.id.txn_party_second)
-            val adapterFirst = PartyNameAdapter(this,R.layout.spinner_item_partyname,partyList,false, spinnerFirst)
-            val adapterSecond = PartyNameAdapter(this,R.layout.spinner_item_partyname,partyList,false, spinnerFirst)
+            val adapterFirst =
+                PartyNameAdapter(
+                    this,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    false,
+                    spinnerFirst
+                )
+            val adapterSecond =
+                PartyNameAdapter(
+                    this,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    false,
+                    spinnerFirst
+                )
             spinnerFirst.adapter=adapterFirst
             spinnerSecond.adapter=adapterSecond
             adapterFirst.notifyDataSetChanged()
@@ -111,7 +134,7 @@ class TransactionParty: AppCompatActivity() {
         datePicker.show(supportFragmentManager,btn.id.toString())
     }
 
-    fun savePartyTransaction(btn: View){
+    private fun savePartyTransaction() {
         val firstPartySpinner = (findViewById<Spinner>(R.id.txn_party_first).selectedItem as PartyModel).getPartyId()
         val secondPartySpinner = (findViewById<Spinner>(R.id.txn_party_second).selectedItem as PartyModel).getPartyId()
         val firstCurrencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_party_currency_first).selectedItem.toString())
@@ -123,7 +146,7 @@ class TransactionParty: AppCompatActivity() {
         val transactionComments = findViewById<EditText>(R.id.txn_party_comments).text.toString()
 
         if(transactionDate == null || transactionAmount == null || exchangeRate == null || firstPartySpinner == secondPartySpinner){
-            var message: String = ""
+            var message = ""
             if(transactionDate == null) message = getString(R.string.txn_date_missing)
             if(transactionAmount == null) message = (if(message.isNotEmpty()) message.plus("\n") else "").plus(getString(R.string.txn_amount_is_missing))
             if(exchangeRate == null) message = (if(message.isNotEmpty()) message.plus("\n") else "").plus(getString(R.string.txn_exchange_rate_is_missing))
@@ -189,7 +212,7 @@ class TransactionParty: AppCompatActivity() {
                 return true
             }
         }
-        return false;
+        return false
     }
 
     private fun enableControls(mode: Boolean){

@@ -2,10 +2,10 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.adapters.TransactionListAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
@@ -16,7 +16,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.*
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.Spinner
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -132,9 +134,9 @@ class Transactions: Fragment() {
             Constants.ActivityIds.EDIT_TRANSACTION->{
                 if(resultCode == Activity.RESULT_OK){
                     if(data!=null){
-                        val status = data!!.getBooleanExtra(Constants.ACTIVITY_RESULT_KEY,false)
+                        val status = data.getBooleanExtra(Constants.ACTIVITY_RESULT_KEY, false)
                         if(status){
-                            val message = when(data!!.getIntExtra(Constants.SUB_ACTIVITY_KEY,-10)){
+                            val message = when (data.getIntExtra(Constants.SUB_ACTIVITY_KEY, -10)) {
                                 Constants.ActivityIds.EDIT_TRANSACTION_EDIT_ACTION->getString(R.string.message_transaction_saved)
                                 Constants.ActivityIds.EDIT_TRANSACTION_DELETE_ACTION->getString(R.string.message_transaction_deleted)
                                 else->getString(R.string.message_invalid_action)
@@ -142,7 +144,7 @@ class Transactions: Fragment() {
                             UIHelper.showAlert(this.context!!,getString(R.string.title_edit_transaction),message)
                             loadTransactions()
                         }else{
-                            val message = when(data!!.getIntExtra(Constants.SUB_ACTIVITY_KEY,-10)){
+                            val message = when (data.getIntExtra(Constants.SUB_ACTIVITY_KEY, -10)) {
                                 Constants.ActivityIds.EDIT_TRANSACTION_EDIT_ACTION->getString(R.string.message_transaction_not_saved)
                                 Constants.ActivityIds.EDIT_TRANSACTION_DELETE_ACTION->getString(R.string.message_transaction_not_deleted)
                                 else->getString(R.string.message_invalid_action)
@@ -241,7 +243,15 @@ class Transactions: Fragment() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     partyList.add(partyModel)
                                 }
                                 activity?.runOnUiThread{processPartyMessage(true,"")}
@@ -268,7 +278,14 @@ class Transactions: Fragment() {
     private fun processPartyMessage(status: Boolean, message: String){
         if(status){
             val spinner = view!!.findViewById<Spinner>(R.id.txn_list_parties)
-            val adapter = PartyNameAdapter(this.context!!,R.layout.spinner_item_partyname,partyList,true, spinner)
+            val adapter =
+                PartyNameAdapter(
+                    this.context!!,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    true,
+                    spinner
+                )
             spinner.adapter=adapter
             adapter.notifyDataSetChanged()
 

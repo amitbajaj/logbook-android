@@ -106,7 +106,6 @@
                 android:layout_marginStart="@dimen/layout_horizontal_spacing"
                 android:layout_marginEnd="@dimen/layout_horizontal_spacing"
                 android:layout_weight="1"
-                android:onClick="askForDeleteConfirmation"
                 android:text="@string/button_text_delete_transaction" />
 
             <Button
@@ -116,7 +115,6 @@
                 android:layout_marginStart="@dimen/layout_horizontal_spacing"
                 android:layout_marginEnd="@dimen/layout_horizontal_spacing"
                 android:layout_weight="1"
-                android:onClick="saveEditTransaction"
                 android:text="@string/button_text_save_transaction" />
         </LinearLayout>
     </LinearLayout>

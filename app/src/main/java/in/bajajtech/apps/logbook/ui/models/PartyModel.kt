@@ -12,20 +12,34 @@ class PartyModel() : Parcelable {
     private var partyINRBalance: Double = 0.0
     private var partyUSDBalance: Double = 0.0
     private var partyAEDBalance: Double = 0.0
+    private var groupId: Int = -1
+    private var groupName: String = ""
     private var checked: Boolean = false
 
     constructor(parcel: Parcel) : this() {
         partyId = parcel.readInt()
         partyName = parcel.readString()!!
+        groupId = parcel.readInt()
+        groupName = parcel.readString()!!
         partyINRBalance = parcel.readDouble()
         partyUSDBalance = parcel.readDouble()
         partyAEDBalance = parcel.readDouble()
         checked = parcel.readByte() != 0.toByte()
     }
 
-    fun setPartyData(id: Int, name: String, inrBalance: Double, usdBalance: Double, aedBalance: Double){
+    fun setPartyData(
+        id: Int,
+        name: String,
+        gid: Int,
+        gname: String,
+        inrBalance: Double,
+        usdBalance: Double,
+        aedBalance: Double
+    ) {
         partyId = id
         partyName=name
+        groupId = gid
+        groupName = gname
         partyINRBalance=inrBalance
         partyUSDBalance=usdBalance
         partyAEDBalance=aedBalance
@@ -33,6 +47,8 @@ class PartyModel() : Parcelable {
 
     fun getPartyId(): Int = this.partyId
     fun getPartyName(): String = this.partyName
+    fun getGroupId(): Int = this.groupId
+    fun getGroupName(): String = this.groupName
     fun getBalance(currency: Int): Double = when(currency){
         Constants.Currencies.INR->this.partyINRBalance
         Constants.Currencies.USD->this.partyUSDBalance
@@ -82,6 +98,8 @@ class PartyModel() : Parcelable {
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(partyId)
         parcel.writeString(partyName)
+        parcel.writeInt(groupId)
+        parcel.writeString(groupName)
         parcel.writeDouble(partyINRBalance)
         parcel.writeDouble(partyUSDBalance)
         parcel.writeDouble(partyAEDBalance)

@@ -31,6 +31,7 @@ object Constants {
         const val RED = Color.RED
         var GREEN = Color.rgb(0,102,51)
         var GRAY = Color.rgb(224,224,224)
+        const val HIGHLIGHT = Color.DKGRAY
     }
 
     object Currencies{

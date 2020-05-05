@@ -2,9 +2,9 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
@@ -31,6 +31,7 @@ class TransactionDirect: AppCompatActivity() {
         title = getString(R.string.title_add_direct_transaction)
         setContentView(R.layout.activity_add_transaction_direct)
         findViewById<Button>(R.id.txn_direct_date).setOnClickListener { showDate(it) }
+        findViewById<Button>(R.id.save_direct_transaction).setOnClickListener { saveDirectTransaction() }
         val currencySpinner = findViewById<Spinner>(R.id.txn_direct_currency)
         val transactionTypeSpinner = findViewById<Spinner>(R.id.txn_direct_type)
         ArrayAdapter.createFromResource(this,R.array.txn_currency,android.R.layout.simple_spinner_item).also { arrayAdapter ->
@@ -65,7 +66,15 @@ class TransactionDirect: AppCompatActivity() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     partyList.add(partyModel)
                                 }
                                 runOnUiThread{processPartyMessage(true,"")}
@@ -92,7 +101,14 @@ class TransactionDirect: AppCompatActivity() {
     private fun processPartyMessage(status: Boolean, message: String){
         if(status){
             val spinner = findViewById<Spinner>(R.id.txn_direct_party_name)
-            val adapter = PartyNameAdapter(this,R.layout.spinner_item_partyname,partyList,false, spinner)
+            val adapter =
+                PartyNameAdapter(
+                    this,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    false,
+                    spinner
+                )
             spinner.adapter=adapter
             adapter.notifyDataSetChanged()
         }else{
@@ -106,7 +122,7 @@ class TransactionDirect: AppCompatActivity() {
         datePicker.show(supportFragmentManager,btn.id.toString())
     }
 
-    fun saveDirectTransaction(btn: View){
+    private fun saveDirectTransaction() {
         val partySpinner = (findViewById<Spinner>(R.id.txn_direct_party_name).selectedItem as PartyModel).getPartyId()
         val currencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_direct_currency).selectedItem.toString())
         val transactionTypeSpinner = Constants.getTransactionSubType(findViewById<Spinner>(R.id.txn_direct_type).selectedItem.toString())
@@ -115,7 +131,7 @@ class TransactionDirect: AppCompatActivity() {
         val transactionComments = findViewById<EditText>(R.id.txn_direct_comments).text.toString()
 
         if(transactionDate == null || transactionAmount == null){
-            var message: String = ""
+            var message = ""
             if(transactionDate == null) message = getString(R.string.txn_date_missing)
             if(transactionAmount == null) message = (if(message.isNotEmpty()) message.plus("\n") else "").plus(getString(R.string.txn_amount_is_missing))
             UIHelper.showAlert(this,getString(R.string.title_add_direct_transaction),message)
@@ -174,7 +190,7 @@ class TransactionDirect: AppCompatActivity() {
                 return true
             }
         }
-        return false;
+        return false
     }
 
     private fun enableControls(mode: Boolean){

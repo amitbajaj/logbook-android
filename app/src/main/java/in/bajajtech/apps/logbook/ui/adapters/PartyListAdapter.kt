@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.list_item_party.view.*
 class PartyListAdapter(ctx: Context, app: Application, parent: Fragment, editable: Boolean = true) :
     RecyclerView.Adapter<PartyListAdapter.PartyViewHolder>() {
     class PartyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val partyName: TextView = itemView.findViewById(R.id.txn_direct_party_name)
+        val partyName: TextView = itemView.findViewById(R.id.txt_party_name)
+        val groupName: TextView = itemView.findViewById(R.id.txt_party_group_name)
         val inrBalance: TextView = itemView.findViewById(R.id.amount_inr)
         val usdBalance: TextView = itemView.findViewById(R.id.amount_usd)
         val aedBalance: TextView = itemView.findViewById(R.id.amount_aed)
@@ -57,7 +58,9 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment, editabl
     override fun onBindViewHolder(holder: PartyViewHolder, position: Int) {
         if (mParties.partyList.isNotEmpty()){
             with(mParties.partyList[position]){
+                println("Group Name is: ${getGroupName()}")
                 holder.partyName.text = getPartyName()
+                holder.groupName.text = getGroupName()
                 with(holder.inrBalance){
                     text = getFormattedBalance(Constants.Currencies.INR)
                     setTextColor(getCurrencyColorCode(Constants.Currencies.INR))
@@ -82,6 +85,7 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment, editabl
                 }
                 if (isEditable) {
                     holder.editButton.visibility = View.VISIBLE
+                    holder.groupName.visibility = View.VISIBLE
                     holder.editButton.setOnClickListener {
                         val intent = Intent(
                             it.context,
@@ -92,6 +96,7 @@ class PartyListAdapter(ctx: Context, app: Application, parent: Fragment, editabl
                     }
                 } else {
                     holder.editButton.visibility = View.GONE
+                    holder.groupName.visibility = View.GONE
                 }
                 if(position%2==0){
                     holder.itemView.setBackgroundColor(Constants.ColorCodes.GRAY)

@@ -8,6 +8,7 @@ import `in`.bajajtech.apps.logbook.ui.models.GroupModel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,10 @@ class GroupListAdapter(ctx: Context, app: Application, parent: Fragment) :
         if (mGroups.groupList.isNotEmpty()) {
             with(mGroups.groupList[position]) {
                 holder.groupName.text = getGroupName()
+                holder.groupName.setOnClickListener {
+                    holder.partyList.visibility =
+                        if (holder.partyList.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                }
                 holder.editButton.setOnClickListener {
                     val intent = Intent(it.context, AddGroup::class.java)
                     intent.putExtra(Constants.GroupObject.ID, this.getGroupId())
@@ -63,18 +68,19 @@ class GroupListAdapter(ctx: Context, app: Application, parent: Fragment) :
                 holder.partyList.apply {
                     layoutManager = LinearLayoutManager(
                         holder.partyList.context,
-                        RecyclerView.HORIZONTAL,
+                        RecyclerView.VERTICAL,
                         false
                     )
                     adapter = mPartyListAdapter
                     setRecycledViewPool(RecyclerView.RecycledViewPool())
                 }
+                holder.partyList.visibility = View.GONE
             }
         }
-//        if(position%2==0){
-//            holder.itemView.setBackgroundColor(Constants.ColorCodes.GRAY)
-//        }else{
-//            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
-//        }
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(Constants.ColorCodes.GRAY)
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+        }
     }
 }

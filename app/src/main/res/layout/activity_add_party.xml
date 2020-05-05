@@ -18,6 +18,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:importantForAutofill="no"/>
 
+    <Spinner
+        android:id="@+id/list_groups"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spinner_height"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_party_name" />
+
     <Button
         android:id="@+id/btn_save_party"
         android:layout_width="match_parent"
@@ -25,7 +34,7 @@
         android:text="@string/save_party"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_party_name" />
+        app:layout_constraintTop_toBottomOf="@+id/list_groups" />
 
 
     <ProgressBar

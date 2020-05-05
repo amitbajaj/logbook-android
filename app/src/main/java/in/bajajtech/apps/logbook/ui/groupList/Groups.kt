@@ -105,6 +105,8 @@ class Groups : Fragment() {
                                         partyModel.setPartyData(
                                             childObject["pid"].toString().toInt(),
                                             childObject["pname"].toString(),
+                                            itemObject["gid"].toString().toInt(),
+                                            itemObject["name"].toString(),
                                             childObject["inrbal"].toString().toDouble(),
                                             childObject["usdbal"].toString().toDouble(),
                                             childObject["aedbal"].toString().toDouble()

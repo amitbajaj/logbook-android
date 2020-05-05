@@ -2,9 +2,9 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.utils.HTTPPostHelper
 import `in`.bajajtech.apps.utils.JSONHelper
@@ -31,6 +31,7 @@ class TransactionCurrency: AppCompatActivity() {
         title = getString(R.string.menu_add_transaction_currency)
         setContentView(R.layout.activity_add_transaction_currency)
         findViewById<Button>(R.id.txn_currency_date).setOnClickListener { showDate(it) }
+        findViewById<Button>(R.id.save_currency_transaction).setOnClickListener { saveCurrencyTransaction() }
         val firstCurrencySpinner = findViewById<Spinner>(R.id.txn_currency_first)
         val secondCurrencySpinner = findViewById<Spinner>(R.id.txn_currency_second)
         val exchangeDirectionSpinner = findViewById<Spinner>(R.id.txn_currency_exchange_direction)
@@ -66,7 +67,15 @@ class TransactionCurrency: AppCompatActivity() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     partyList.add(partyModel)
                                 }
                                 runOnUiThread{processPartyMessage(true,"")}
@@ -93,7 +102,14 @@ class TransactionCurrency: AppCompatActivity() {
     private fun processPartyMessage(status: Boolean, message: String){
         if(status){
             val spinner = findViewById<Spinner>(R.id.txn_currency_party_name)
-            val adapter = PartyNameAdapter(this,R.layout.spinner_item_partyname,partyList,false, spinner)
+            val adapter =
+                PartyNameAdapter(
+                    this,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    false,
+                    spinner
+                )
             spinner.adapter=adapter
             adapter.notifyDataSetChanged()
         }else{
@@ -107,7 +123,7 @@ class TransactionCurrency: AppCompatActivity() {
         datePicker.show(supportFragmentManager,btn.id.toString())
     }
 
-    fun saveCurrencyTransaction(btn: View){
+    private fun saveCurrencyTransaction() {
         val partySpinner = (findViewById<Spinner>(R.id.txn_currency_party_name).selectedItem as PartyModel).getPartyId()
         val firstCurrencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_currency_first).selectedItem.toString())
         val secondCurrencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_currency_second).selectedItem.toString())
@@ -118,7 +134,7 @@ class TransactionCurrency: AppCompatActivity() {
         val transactionComments = findViewById<EditText>(R.id.txn_currency_comments).text.toString()
 
         if(transactionDate == null || transactionAmount == null || exchangeRate == null || firstCurrencySpinner == secondCurrencySpinner){
-            var message: String = ""
+            var message = ""
             if(transactionDate == null) message = getString(R.string.txn_date_missing)
             if(transactionAmount == null) message = (if(message.isNotEmpty()) message.plus("\n") else "").plus(getString(R.string.txn_amount_is_missing))
             if(exchangeRate == null) message = (if(message.isNotEmpty()) message.plus("\n") else "").plus(getString(R.string.txn_exchange_rate_is_missing))
@@ -184,7 +200,7 @@ class TransactionCurrency: AppCompatActivity() {
                 return true
             }
         }
-        return false;
+        return false
     }
 
     private fun enableControls(mode: Boolean){

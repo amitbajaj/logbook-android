@@ -2,9 +2,9 @@ package `in`.bajajtech.apps.logbook.ui.transactionList
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
+import `in`.bajajtech.apps.logbook.ui.adapters.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.controls.DateObject
 import `in`.bajajtech.apps.logbook.ui.controls.DatePicker
-import `in`.bajajtech.apps.logbook.ui.controls.PartyNameAdapter
 import `in`.bajajtech.apps.logbook.ui.models.PartyModel
 import `in`.bajajtech.apps.logbook.ui.models.TransactionModel
 import `in`.bajajtech.apps.utils.*
@@ -73,6 +73,8 @@ class TransactionEdit: AppCompatActivity() {
                 exchangeDirectionSpinner.setSelection(txnObject.getExchangeDirection()-1)
             }
             findViewById<EditText>(R.id.txn_edit_comments).setText(txnObject.getComments())
+            findViewById<Button>(R.id.save_edit_transaction).setOnClickListener { saveEditTransaction() }
+            findViewById<Button>(R.id.delete_edit_transaction).setOnClickListener { askForDeleteConfirmation() }
             loadParties()
         }
     }
@@ -99,7 +101,15 @@ class TransactionEdit: AppCompatActivity() {
                                     itemObject = it as JSONObject
                                     partyModel =
                                         PartyModel()
-                                    partyModel.setPartyData(itemObject["id"].toString().toInt(),itemObject["name"].toString(),0.0,0.0,0.0)
+                                    partyModel.setPartyData(
+                                        itemObject["id"].toString().toInt(),
+                                        itemObject["name"].toString(),
+                                        0,
+                                        "",
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    )
                                     if(partyModel.getPartyId()==selectedPartyId) selectedPartyIndex = iCounter
                                     partyList.add(partyModel)
                                     iCounter++
@@ -128,7 +138,14 @@ class TransactionEdit: AppCompatActivity() {
     private fun processPartyMessage(status: Boolean, message: String, selectedIndex: Int = 0){
         if(status){
             val spinner = findViewById<Spinner>(R.id.txn_edit_party_name)
-            val adapter = PartyNameAdapter(this,R.layout.spinner_item_partyname,partyList,false, spinner)
+            val adapter =
+                PartyNameAdapter(
+                    this,
+                    R.layout.spinner_item_partyname,
+                    partyList,
+                    false,
+                    spinner
+                )
             spinner.adapter=adapter
             spinner.setSelection(selectedIndex)
             adapter.notifyDataSetChanged()
@@ -143,7 +160,7 @@ class TransactionEdit: AppCompatActivity() {
         datePicker.show(supportFragmentManager,btn.id.toString())
     }
 
-    fun saveEditTransaction(btn: View){
+    private fun saveEditTransaction() {
         val transactionId = txnObject.getTransactionId().toString()
         val transactionPartyId = (findViewById<Spinner>(R.id.txn_edit_party_name).selectedItem as PartyModel).getPartyId()
         val transactionDate = HTTPPostHelper.encode((findViewById<Button>(R.id.txn_edit_date).tag as DateObject).getDate())
@@ -194,7 +211,7 @@ class TransactionEdit: AppCompatActivity() {
 
     }
 
-    fun askForDeleteConfirmation(btn: View){
+    private fun askForDeleteConfirmation() {
         UIHelper.showConfirmationDialog(this,
             getString(R.string.title_edit_transaction),getString(R.string.delete_confirmation),
             getString(R.string.button_text_delete_positive), { deleteTransaction() },

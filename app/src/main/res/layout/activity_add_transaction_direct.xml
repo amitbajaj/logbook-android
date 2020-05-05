@@ -73,8 +73,7 @@
                 android:id="@+id/save_direct_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_text_save_transaction"
-                android:onClick="saveDirectTransaction"/>
+                android:text="@string/button_text_save_transaction" />
 
         </LinearLayout>
     </ScrollView>

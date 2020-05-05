@@ -1,4 +1,4 @@
-package `in`.bajajtech.apps.logbook.ui.controls
+package `in`.bajajtech.apps.logbook.ui.adapters
 
 import `in`.bajajtech.apps.logbook.Constants
 import `in`.bajajtech.apps.logbook.R
@@ -11,7 +11,13 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 
-class PartyNameAdapter(private val ctx: Context, private val res: Int, private val partyList: List<PartyModel>, private val multiSelect: Boolean, private val holder: Spinner):ArrayAdapter<PartyModel>(ctx,res,partyList.toTypedArray()) {
+class PartyNameAdapter(
+    ctx: Context,
+    res: Int,
+    private val partyList: List<PartyModel>,
+    private val multiSelect: Boolean,
+    private val holder: Spinner
+) : ArrayAdapter<PartyModel>(ctx, res, partyList.toTypedArray()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return partyNameView(position)
