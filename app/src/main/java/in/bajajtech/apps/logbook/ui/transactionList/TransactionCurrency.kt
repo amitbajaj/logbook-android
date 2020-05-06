@@ -35,6 +35,7 @@ class TransactionCurrency: AppCompatActivity() {
         val firstCurrencySpinner = findViewById<Spinner>(R.id.txn_currency_first)
         val secondCurrencySpinner = findViewById<Spinner>(R.id.txn_currency_second)
         val exchangeDirectionSpinner = findViewById<Spinner>(R.id.txn_currency_exchange_direction)
+        val transactionTypeSpinner = findViewById<Spinner>(R.id.txn_currency_type)
         ArrayAdapter.createFromResource(this, R.array.txn_currency,android.R.layout.simple_spinner_item).also { arrayAdapter ->
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             firstCurrencySpinner.adapter=arrayAdapter
@@ -45,6 +46,16 @@ class TransactionCurrency: AppCompatActivity() {
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             exchangeDirectionSpinner.adapter=arrayAdapter
         }
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.currency_txn_type,
+            android.R.layout.simple_spinner_item
+        ).also { arrayAdapter ->
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            transactionTypeSpinner.adapter = arrayAdapter
+        }
+
         loadParties()
     }
     private fun loadParties(){
@@ -128,6 +139,8 @@ class TransactionCurrency: AppCompatActivity() {
         val firstCurrencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_currency_first).selectedItem.toString())
         val secondCurrencySpinner = Constants.getCurrencyId(findViewById<Spinner>(R.id.txn_currency_second).selectedItem.toString())
         val exchangeDirectionSpinner = Constants.getExchangeDirection(findViewById<Spinner>(R.id.txn_currency_exchange_direction).selectedItem.toString())
+        val currencyTransactionTypeSpinner =
+            Constants.getCcyTransactionSubType(findViewById<Spinner>(R.id.txn_currency_type).selectedItem.toString())
         val exchangeRate = findViewById<EditText>(R.id.txn_currency_exchange_rate).text.toString().toDoubleOrNull()
         val transactionDate = findViewById<Button>(R.id.txn_currency_date).tag as DateObject?
         val transactionAmount = findViewById<EditText>(R.id.txn_currency_amount).text.toString().toDoubleOrNull()
@@ -150,7 +163,10 @@ class TransactionCurrency: AppCompatActivity() {
             UIHelper.hideKeyboard(this.applicationContext,findViewById<EditText>(R.id.txn_currency_comments).windowToken)
             CompletableFuture.runAsync {
                 val sessionId = preferenceStore.getValue(Constants.PrefKeySessionId)
-                val dataString = "mode=SVCCY&ptyid=$partySpinner&ccy1id=$firstCurrencySpinner&ccy2id=$secondCurrencySpinner&txnedir=$exchangeDirectionSpinner&txnexch=$exchangeRate&txndt=${HTTPPostHelper.encode(transactionDate.getDate())}&txnamt=$transactionAmount&txncmts=${HTTPPostHelper.encode(transactionComments)}"
+                val dataString =
+                    "mode=SVCCY&ptyid=$partySpinner&txntyp=$currencyTransactionTypeSpinner&ccy1id=$firstCurrencySpinner&ccy2id=$secondCurrencySpinner&txnedir=$exchangeDirectionSpinner&txnexch=$exchangeRate&txndt=${HTTPPostHelper.encode(
+                        transactionDate.getDate()
+                    )}&txnamt=$transactionAmount&txncmts=${HTTPPostHelper.encode(transactionComments)}"
                 try{
                     val result = HTTPPostHelper.doHTTPPost(Constants.TransactionsCodeURL,sessionId,dataString)
                     if(result!=null){

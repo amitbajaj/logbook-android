@@ -26,11 +26,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/txn_currency_party_name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/spinner_height"
-                android:spinnerMode="dialog" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/txn_currency_party_name"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_weight="1"
+                    android:spinnerMode="dialog" />
+
+                <Spinner
+                    android:id="@+id/txn_currency_type"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/spinner_height"
+                    android:layout_weight="1"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,8 +115,7 @@
                 android:id="@+id/save_currency_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_text_save_transaction"
-                android:onClick="saveCurrencyTransaction"/>
+                android:text="@string/button_text_save_transaction" />
 
         </LinearLayout>
     </ScrollView>

@@ -55,6 +55,11 @@
         <item>Debit</item>
     </string-array>
 
+    <string-array name="currency_txn_type">
+        <item>Buy</item>
+        <item>Sell</item>
+    </string-array>
+
     <string-array name="txn_currency">
         <item>INR</item>
         <item>USD</item>

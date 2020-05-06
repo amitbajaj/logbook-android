@@ -111,7 +111,21 @@ object Constants {
         else-> INVALID_VALUE
     }
 
-    object TransactionSubTypes{
+    object CcyTransactionSubTypes {
+        const val BUY = 1
+        const val BUY_DESCRIPTION = "Buy"
+        const val SELL = 2
+        const val SELL_DESCRIPTION = "Sell"
+    }
+
+    fun getCcyTransactionSubType(subType: String): Int =
+        when (subType.toLowerCase(Locale.getDefault())) {
+            CcyTransactionSubTypes.BUY_DESCRIPTION.toLowerCase(Locale.getDefault()) -> CcyTransactionSubTypes.BUY
+            CcyTransactionSubTypes.SELL_DESCRIPTION.toLowerCase(Locale.getDefault()) -> CcyTransactionSubTypes.SELL
+        else-> INVALID_VALUE
+    }
+
+    object TransactionSubTypes {
         const val CREDIT = 1
         const val CREDIT_DESCRIPTION = "Credit"
         const val DEBIT = 2
@@ -122,8 +136,8 @@ object Constants {
         when (subType.toLowerCase(Locale.getDefault())) {
             TransactionSubTypes.CREDIT_DESCRIPTION.toLowerCase(Locale.getDefault()) -> TransactionSubTypes.CREDIT
             TransactionSubTypes.DEBIT_DESCRIPTION.toLowerCase(Locale.getDefault()) -> TransactionSubTypes.DEBIT
-        else-> INVALID_VALUE
-    }
+            else -> INVALID_VALUE
+        }
 
     object Strings{
         private const val INT_TICK_MARK = 0X2611
